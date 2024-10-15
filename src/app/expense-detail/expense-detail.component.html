@@ -1,0 +1,28 @@
+<div class="container-sm m-5">
+    <h3>Expense Details</h3>
+    <form [formGroup]="form" *ngIf="expense" (ngSubmit)="submit()">
+        <div class="form-group m-2">
+            <label for="expenseId">ID</label>
+            <input id="expenseId" class="form-control" value="{{expense.id}}" readonly>
+        </div>
+        <div class="form-group m-2">
+            <label for="expenseDate">Date</label>
+            <input id="expenseDate" class="form-control" [value]="date" readonly>
+        </div>
+        <div class="form-group m-2">
+            <label for="comments">Comments</label>
+            <input id="comments" class="form-control" formControlName="comments" name="comments">
+            <div *ngIf="form.controls['comments'].invalid && (form.controls['comments'].dirty || form.controls['comments'].touched)" class="text-danger">
+                <div *ngIf="form.controls['comments'].errors?.['required']">
+                  Comments are required.
+                </div>
+                <div *ngIf="form.controls['comments'].errors?.['pattern']">
+                  Comments must only contain alphanumeric characters.
+                </div>
+            </div>
+        </div>
+        
+        <button type="button" class="btn btn-primary m-2" (click)="back()">Back</button>
+        <button type="submit" class="btn btn-primary m-2" [disabled]="form.invalid">Update</button>
+    </form>
+</div>
