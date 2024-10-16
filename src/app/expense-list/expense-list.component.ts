@@ -36,9 +36,11 @@ export class ExpenseListComponent implements OnInit {
   }
 
   addExpense(form: NgForm) {
+    const utcDate = new Date(this.newExpense.date)
+    const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
     const addedExpense = {
       id: String(this.expenses.length + 1),
-      date: new Date(this.newExpense.date).getTime(),
+      date: localDate.getTime(),
       comments: this.newExpense.comments,
       amount: this.newExpense.amount,
       type: this.newExpense.type as ExpenseType
