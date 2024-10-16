@@ -6,6 +6,20 @@ export interface Expense {
   date: number,
   comments: string,
   amount: number,
+  type: ExpenseType,
+}
+
+export enum ExpenseType {
+  Food = 'Food',
+  Groceries = 'Groceries',
+  Transportation = 'Transportation',
+  Utilities = 'Utilities',
+  Housing = 'Housing',
+  Health = 'Health',
+  Recreation = 'Recreation',
+  PersonalCare = 'Personal Care & Shopping',
+  Savings = 'Savings',
+  Other = 'Other',
 }
 
 @Injectable({

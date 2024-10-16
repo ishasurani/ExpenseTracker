@@ -14,11 +14,17 @@ mongoose.connect('mongodb://localhost:27017/expenses-db').then(() => {
     console.error('Error connecting to MongoDB', err);
 });
 
+const expenseTypes = ['Food', 'Groceries', 'Transportation', 'Utilities', 'Housing', 'Health', 'Recreation', 'Personal Care & Shopping', 'Savings', 'Other']
+
 const Expense = mongoose.model('expenses', new mongoose.Schema({
     id: String,
     date: Number,
     amount: Number,
     comments: String,
+    type: {
+        type: String,
+        enum: expenseTypes
+    }
 }))
 
 app.get('/expenses/:startDate/:endDate', async (req, res) => {
@@ -57,12 +63,13 @@ app.put('/expenses/:id', async (req, res) => {
 })
 
 app.post('/expenses', async (req, res) => {
-    const { id, date, amount, comments } = req.body;
+    const { id, date, amount, type, comments } = req.body;
 
     const newExpense = new Expense({
         id,
         date,
         amount,
+        type,
         comments,
     });
 

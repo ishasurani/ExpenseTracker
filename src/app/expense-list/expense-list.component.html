@@ -11,6 +11,7 @@
             <tr>
                 <th scope="col">Date</th>
                 <th scope="col">Amount</th>
+                <th scope="col">Type</th>
                 <th scope="col">Comments</th>
                 <th scope="col">Action</th>
             </tr>
@@ -19,6 +20,7 @@
             <tr *ngFor="let expense of expenses">
                 <td>{{ formatDate(expense.date) }}</td>
                 <td>${{ expense.amount }}</td>
+                <td>{{ expense.type }}</td>
                 <td>{{ expense.comments }}</td>
                 <td><a [routerLink]="['/expenses', expense.id]">View</a></td>
             </tr>
@@ -32,7 +34,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form (ngSubmit)="addExpense()" #form="ngForm" novalidate>
+                    <form (ngSubmit)="addExpense(form)" #form="ngForm" novalidate>
                         <div class="mb-3">
                             <label for="expenseDate" class="form-label">Date</label>
                             <input type="date" id="expenseDate" [(ngModel)]="newExpense.date" name="date" class="form-control" #date="ngModel" required>
@@ -45,6 +47,16 @@
                             <input type="number" id="expenseAmount" [(ngModel)]="newExpense.amount" name="amount" class="form-control" #amount="ngModel" required>
                             <div *ngIf="amount.invalid && amount.touched" class="text-danger">
                                 Amount is required.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="expenseType" class="form-label">Type</label>
+                            <select id="expenseType" [(ngModel)]="newExpense.type" name="type" class="form-control" #type="ngModel" required>
+                                <option value="" disabled selected>Select an expense type</option>
+                                <option *ngFor="let expenseType of expenseTypes" [value]="expenseType">{{ expenseType }}</option>
+                            </select> 
+                            <div *ngIf="type.invalid && type.touched" class="text-danger">
+                                Type is required.
                             </div>
                         </div>
                         <div class="mb-3">
