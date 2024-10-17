@@ -3,12 +3,13 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Expense, ExpenseService, ExpenseType } from '../expense.service';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
+import { ExpenseMonthlyComponent } from '../expense-monthly/expense-monthly.component';
 
 
 @Component({
   selector: 'app-expense-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe, FormsModule],
+  imports: [CommonModule, RouterModule, DatePipe, FormsModule, ExpenseMonthlyComponent],
   templateUrl: './expense-list.component.html',
   styleUrl: './expense-list.component.scss'
 })
@@ -48,7 +49,7 @@ export class ExpenseListComponent implements OnInit {
 
     this.expenseService.addExpense(addedExpense).subscribe({
     next: (expense: Expense) => {
-      this.expenses.push(expense);
+      this.expenses = [...this.expenses, expense];
       this.newExpense = { date: '', comments: '' , amount: 0, type: ''};
       form.resetForm({
         date: '',

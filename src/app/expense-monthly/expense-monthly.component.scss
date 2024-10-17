@@ -1,0 +1,14 @@
+.chart-container {
+    margin-top: 20px;
+    display: flex;
+}
+
+.monthly-totals {
+    flex: 1;
+    max-width: 40%;
+}
+
+.pie-chart {
+    width: 50%;
+    max-width: 500px;
+}

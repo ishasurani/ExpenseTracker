@@ -19,7 +19,7 @@
         <tbody>
             <tr *ngFor="let expense of expenses">
                 <td>{{ formatDate(expense.date) }}</td>
-                <td>${{ expense.amount }}</td>
+                <td>{{ expense.amount | currency}}</td>
                 <td>{{ expense.type }}</td>
                 <td>{{ expense.comments }}</td>
                 <td><a [routerLink]="['/expenses', expense.id]">View</a></td>
@@ -69,4 +69,5 @@
             </div>
         </div>
     </div>
+    <app-expense-monthly [expenses]="expenses"></app-expense-monthly>
 </div>
