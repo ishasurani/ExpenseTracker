@@ -4,12 +4,13 @@ import { Expense, ExpenseService, ExpenseType } from '../expense.service';
 import { ActivatedRoute, Params, RouterModule } from '@angular/router';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ExpenseMonthlyComponent } from '../expense-monthly/expense-monthly.component';
+import { ExpenseYearlyComponent } from '../expense-yearly/expense-yearly.component';
 
 
 @Component({
   selector: 'app-expense-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe, FormsModule, ExpenseMonthlyComponent],
+  imports: [CommonModule, RouterModule, DatePipe, FormsModule, ExpenseMonthlyComponent, ExpenseYearlyComponent],
   templateUrl: './expense-list.component.html',
   styleUrl: './expense-list.component.scss'
 })
