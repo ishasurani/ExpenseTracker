@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, ViewChild } from '@angular/core';
-import { Expense } from '../expense.service';
+import { Expense, ExpenseType } from '../expense.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
 
@@ -28,7 +28,11 @@ export class ExpenseYearlyComponent  implements OnChanges{
   barChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     scales: {
+      x: {
+        stacked: true,
+      },
       y: {
+        stacked: true,
         beginAtZero: true,
       },
     },
@@ -53,18 +57,33 @@ export class ExpenseYearlyComponent  implements OnChanges{
       return `${month.toString().padStart(2, '0')}-${year}`;
     }).reverse();
 
-    const monthlyTotals = new Map(labels.map(label => [label, 0]));
+    const monthlyTypeTotals = new Map<string, Map<string, number>>();
+    const expenseTypes = Object.values(ExpenseType);
+
+    labels.forEach(label => {
+      const typeMap = new Map<string, number>();
+      expenseTypes.forEach(type => typeMap.set(type, 0))
+      monthlyTypeTotals.set(label, typeMap)
+    })
 
     recentExpenses.forEach((expense) => {
       const date = new Date(expense.date);
       const monthYear = `${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getFullYear()}`;
 
-      if (monthlyTotals.has(monthYear)) {
-        monthlyTotals.set(monthYear, monthlyTotals.get(monthYear)! + expense.amount);
+      if (monthlyTypeTotals.has(monthYear)) {
+        const typeMap = monthlyTypeTotals.get(monthYear)
+        typeMap?.set(expense.type, typeMap.get(expense.type)! + expense.amount)
       }
     })
+    const colours = ['#FFB6C1', '#36A2EB', '#FFCE56', '#FF9F40', '#4BC0C0', '#9966FF', '#4CAF50', '#9E9E9E', '#AEEEEE', '#FF4500']
+    const datasets = expenseTypes.map((type, i) => ({
+      label: type,
+      data: labels.map(month => monthlyTypeTotals.get(month)!.get(type)!),
+      backgroundColor: colours[i],
+    }))
+
     this.barChartData.labels = labels;
-    this.barChartData.datasets[0].data =  Array.from(monthlyTotals.values());
+    this.barChartData.datasets =  datasets;
 
     if (this.chart) {
       this.chart.update();
