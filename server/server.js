@@ -35,7 +35,7 @@ app.get('/expenses/:startDate/:endDate', async (req, res) => {
             .find({
                 'date': { $gt: startDate, $lt: endDate }
             })
-            .sort({ 'date': 1 })
+            .sort({ 'date': -1 })
             .exec();
         res.json(expenses)
     } 

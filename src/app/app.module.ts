@@ -11,11 +11,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ExpenseMonthlyComponent } from './expense-monthly/expense-monthly.component';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { ExpenseYearlyComponent } from './expense-yearly/expense-yearly.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, ExpenseDetailComponent, ExpenseListComponent, CommonModule, ReactiveFormsModule, FormsModule, ExpenseMonthlyComponent, ExpenseYearlyComponent],
-  providers: [ExpenseService, provideHttpClient(), DatePipe, provideCharts(withDefaultRegisterables())],
+  providers: [ExpenseService, provideHttpClient(), DatePipe, provideCharts(withDefaultRegisterables()), provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
