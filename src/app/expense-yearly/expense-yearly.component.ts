@@ -3,11 +3,12 @@ import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { Expense, ExpenseType } from '../expense.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-expense-yearly',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, BaseChartDirective, MatCardModule],
   templateUrl: './expense-yearly.component.html',
   styleUrl: './expense-yearly.component.scss'
 })

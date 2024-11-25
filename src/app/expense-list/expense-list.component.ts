@@ -9,6 +9,7 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatCardModule} from '@angular/material/card';
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 
 @Component({
@@ -23,7 +24,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
     MatTableModule, 
     MatCardModule, 
     MatPaginatorModule, 
-    MatSortModule],
+    MatSortModule,
+    MatGridListModule],
   templateUrl: './expense-list.component.html',
   styleUrl: './expense-list.component.scss'
 })

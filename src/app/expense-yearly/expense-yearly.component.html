@@ -1,9 +1,13 @@
-<h3 class="mt-4">Comparing Monthly Totals</h3>
+<mat-card appearance="outlined">
+        <mat-card-content class="m-2">
+                <h5>Comparing Monthly Totals</h5>
 
-<div class="chart-container">
-    <canvas baseChart
-            [data]="barChartData"
-            [options]="barChartOptions"
-            chartType="bar">
-    </canvas>
-  </div>
+                <div class="chart-container">
+                        <canvas baseChart
+                                [data]="barChartData"
+                                [options]="barChartOptions"
+                                chartType="bar">
+                        </canvas>
+                </div>
+        </mat-card-content>
+</mat-card>

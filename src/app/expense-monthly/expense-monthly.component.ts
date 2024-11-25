@@ -3,11 +3,12 @@ import { Component, Input, OnChanges, ViewChild } from '@angular/core';
 import { Expense, ExpenseType } from '../expense.service';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-expense-monthly',
   standalone: true,
-  imports: [CommonModule, BaseChartDirective],
+  imports: [CommonModule, BaseChartDirective, MatCardModule],
   templateUrl: './expense-monthly.component.html',
   styleUrl: './expense-monthly.component.scss'
 })
@@ -22,6 +23,7 @@ export class ExpenseMonthlyComponent  implements OnChanges{
 
   chartOptions: ChartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'right',
