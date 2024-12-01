@@ -3,7 +3,7 @@
         <h5>Monthly Totals by Expense Type</h5>
         <div class="chart-container">
             <div>
-                <label for="month">Select Month: </label>
+                <label for="month">Select Month:&nbsp;</label>
                 <input type="month" id="month" (change)="onMonthChange($event)" [value]="year + '-' + (month + 1).toString().padStart(2, '0')">
 
                 <div class="expense-summary mt-3">

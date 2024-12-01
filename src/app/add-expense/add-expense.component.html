@@ -1,1 +1,36 @@
-<p>add-expense works!</p>
+<h2 mat-dialog-title>Add Expense</h2>
+<mat-dialog-content class="mat-typography">
+    <form (ngSubmit)="addExpense()" #form="ngForm" class="add-expense-form" novalidate>
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Date</mat-label>
+            <input matInput type="date" class="pb-2" [(ngModel)]="newExpense.date" name="date" #date="ngModel" required>
+            <mat-error *ngIf="date.invalid && date.touched">Date is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" [(ngModel)]="newExpense.amount" name="amount" #amount="ngModel" required>
+            <mat-error *ngIf="amount.invalid && amount.touched">Amount is required.</mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Type</mat-label>
+            <mat-select [(ngModel)]="newExpense.type" name="type" #type="ngModel" required>
+              <mat-option value="" disabled>Select an expense type</mat-option>
+              <mat-option *ngFor="let expenseType of expenseTypes" [value]="expenseType">
+                {{ expenseType }}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="type.invalid && type.touched">Type is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Comments</mat-label>
+            <textarea matInput [(ngModel)]="newExpense.comments" name="comments" #comments="ngModel"></textarea>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!form.form.valid" (click)="addExpense()">Add Expense</button>
+</mat-dialog-actions>

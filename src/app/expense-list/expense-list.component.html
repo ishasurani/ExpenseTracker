@@ -2,10 +2,10 @@
     <div class="long-column">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Expenses Tracker</h3>    
-            <button type="button" class="btn btn-primary m-2 rounded-pill" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
-                <i class="bi bi-plus-circle-fill"></i>
+            <button mat-raised-button color="primary" class="m-2 rounded-pill add-expense-button" (click)="addExpenseDialog()">
+                <mat-icon>add_circle</mat-icon>
                 Add Expense
-            </button>
+              </button>
         </div>
         <div class="d-flex justify-content-center align-items-center mb-3">
             <mat-card appearance="outlined">
@@ -40,49 +40,6 @@
                     </mat-paginator>
                 </mat-card-content>
             </mat-card>
-        </div>
-        <div class="modal fade" id="addExpenseModal" tabindex="-1" aria-labelledby="addExpenseModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addExpenseModalLabel">Add Expense</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form (ngSubmit)="addExpense(form)" #form="ngForm" novalidate>
-                            <div class="mb-3">
-                                <label for="expenseDate" class="form-label">Date</label>
-                                <input type="date" id="expenseDate" [(ngModel)]="newExpense.date" name="date" class="form-control" #date="ngModel" required>
-                                <div *ngIf="date.invalid && date.touched" class="text-danger">
-                                    Date is required.
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="expenseAmount" class="form-label">Amount</label>
-                                <input type="number" id="expenseAmount" [(ngModel)]="newExpense.amount" name="amount" class="form-control" #amount="ngModel" required>
-                                <div *ngIf="amount.invalid && amount.touched" class="text-danger">
-                                    Amount is required.
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="expenseType" class="form-label">Type</label>
-                                <select id="expenseType" [(ngModel)]="newExpense.type" name="type" class="form-control" #type="ngModel" required>
-                                    <option value="" disabled selected>Select an expense type</option>
-                                    <option *ngFor="let expenseType of expenseTypes" [value]="expenseType">{{ expenseType }}</option>
-                                </select> 
-                                <div *ngIf="type.invalid && type.touched" class="text-danger">
-                                    Type is required.
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label for="expenseComments" class="form-label">Comments</label>
-                                <textarea id="expenseComments" [(ngModel)]="newExpense.comments" name="comments" class="form-control" #comments="ngModel"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" [disabled]="!form.form.valid">Add Expense</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <div class="grid-cards">

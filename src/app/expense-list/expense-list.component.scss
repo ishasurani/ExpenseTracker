@@ -14,3 +14,10 @@
     flex-direction: column;
     gap: 16px;
 }
+
+.add-expense-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+}
