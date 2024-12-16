@@ -19,7 +19,12 @@ export class ExpenseMonthlyComponent  implements OnChanges{
   month: number = new Date().getMonth()
   year: number = new Date().getFullYear()
   expenseTypes = Object.values(ExpenseType);
-  noExpenses = true;
+  monthNames = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  monthName = this.monthNames[this.month]
+  total = 0;
 
   chartOptions: ChartOptions = {
     responsive: true,
@@ -64,7 +69,7 @@ export class ExpenseMonthlyComponent  implements OnChanges{
 
 
       this.chartData.datasets[0].data = Object.values(this.monthlyTotals); // update chart data
-      this.noExpenses = this.expenseTypes.every(type => (this.monthlyTotals[type] || 0) === 0);
+      this.total = Object.values(this.monthlyTotals).reduce((total, value) => total + value, 0);
       if (this.chart) {
         this.chart.update();
       }
@@ -73,6 +78,7 @@ export class ExpenseMonthlyComponent  implements OnChanges{
   onMonthChange(e: Event){
     const selectedDate = new Date((e.target as HTMLSelectElement).value);
     this.month = selectedDate.getUTCMonth();
+    this.monthName = this.monthNames[this.month]
     this.year = selectedDate.getFullYear();
     this.recalculateMonthlyTotals(this.month, this.year)
   }

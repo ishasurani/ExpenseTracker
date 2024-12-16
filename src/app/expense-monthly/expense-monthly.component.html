@@ -1,6 +1,6 @@
 <mat-card appearance="outlined">
     <mat-card-content class="m-2">
-        <h5>Monthly Totals by Expense Type</h5>
+        <h5>Expense Breakdown for {{monthName}} {{year}}</h5>
         <div class="chart-container">
             <div>
                 <label for="month">Select Month:&nbsp;</label>
@@ -13,7 +13,7 @@
                   </div>
             </div>
 
-            <div class="pie-chart" *ngIf="!noExpenses">
+            <div class="pie-chart" *ngIf="total">
                 <canvas 
                 baseChart 
                 [datasets]="chartData.datasets" 
@@ -22,7 +22,8 @@
                 [type]="'doughnut'">
                 </canvas>
             </div>
-            <div *ngIf="noExpenses">
+            <strong *ngIf="total"><br> Total: {{total | currency}}</strong>
+            <div *ngIf="!total">
             No expenses for this month.
             </div>
 

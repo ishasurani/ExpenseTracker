@@ -10,8 +10,9 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialog } from '@angular/material/dialog';
-import { AddExpenseComponent } from '../add-expense/add-expense.component';
+import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
 import { MatIconModule } from '@angular/material/icon'
+import { MatButtonModule } from '@angular/material/button';
 
 
 @Component({
@@ -27,7 +28,8 @@ import { MatIconModule } from '@angular/material/icon'
     MatPaginatorModule, 
     MatSortModule,
     MatGridListModule,
-    MatIconModule
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './expense-list.component.html',
   styleUrl: './expense-list.component.scss'
@@ -37,7 +39,7 @@ export class ExpenseListComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<Expense>(this.expenses);
   start = -8640000000000000;
   end = 8640000000000000;
-  displayedColumns: string[] = ['date', 'amount', 'type', 'comments', 'action'];
+  displayedColumns: string[] = ['date', 'amount', 'type', 'comments', 'edit'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -75,7 +77,7 @@ export class ExpenseListComponent implements OnInit, AfterViewInit {
   }
 
   addExpenseDialog() {
-    const dialogRef = this.dialog.open(AddExpenseComponent, {
+    const dialogRef = this.dialog.open(ExpenseModalComponent, {
       width: '600px',
     });
     dialogRef.afterClosed().subscribe((result) => {
@@ -91,14 +93,47 @@ export class ExpenseListComponent implements OnInit, AfterViewInit {
         };
 
         this.expenseService.addExpense(addedExpense).subscribe({
-        next: (expense: Expense) => {
-          this.expenses = [...this.expenses, expense];
-          this.dataSource.data = this.expenses;
-        },
-        error: (error) => {
-          console.error('Error adding expense:', error);
-        }
+          next: (expense: Expense) => {
+            this.expenses = [...this.expenses, expense];
+            this.dataSource.data = this.expenses;
+          },
+          error: (error) => {
+            console.error('Error adding expense:', error);
+          }
         })
+      }
+    })
+  }
+
+  editExpenseDialog(id: string) {
+    const dialogRef = this.dialog.open(ExpenseModalComponent, {
+      width: '600px',
+      data: id
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const utcDate = new Date(result.date)
+        const localDate = new Date(utcDate.getTime() + utcDate.getTimezoneOffset() * 60000)
+        const updatedExpense = {
+          id,
+          date: localDate.getTime(),
+          comments: result.comments,
+          amount: result.amount,
+          type: result.type as ExpenseType
+        };
+
+        this.expenseService.updateExpense(updatedExpense).subscribe({
+          next: (expense: Expense) => {
+            const index = this.expenses.findIndex(exp => exp.id === expense.id);
+            if (index !== -1) {
+              this.expenses[index] = expense;
+              this.dataSource.data = [...this.expenses];
+            }
+          },
+          error: (error) => {
+            console.error('Error editing expense:', error);
+          }
+        });
       }
     })
   }

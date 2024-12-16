@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Add Expense</h2>
+<h2 mat-dialog-title>{{data ? 'Edit Expense' : 'Add Expense'}} </h2>
 <mat-dialog-content class="mat-typography">
     <form (ngSubmit)="addExpense()" #form="ngForm" class="add-expense-form" novalidate>
         <mat-form-field appearance="fill" class="full-width">
@@ -32,5 +32,5 @@
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
-    <button mat-raised-button color="primary" [disabled]="!form.form.valid" (click)="addExpense()">Add Expense</button>
+    <button mat-flat-button color="primary" [disabled]="!form.form.valid" (click)="addExpense()">{{data ? 'Edit Expense' : 'Add Expense'}}</button>
 </mat-dialog-actions>
