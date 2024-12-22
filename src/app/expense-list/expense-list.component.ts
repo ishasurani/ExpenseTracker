@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 
 @Component({
@@ -29,7 +30,8 @@ import { MatButtonModule } from '@angular/material/button';
     MatSortModule,
     MatGridListModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
+    MatToolbarModule
   ],
   templateUrl: './expense-list.component.html',
   styleUrl: './expense-list.component.scss'
@@ -39,6 +41,9 @@ export class ExpenseListComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<Expense>(this.expenses);
   start = -8640000000000000;
   end = 8640000000000000;
+  total = 0;
+  currMonth = new Date().getMonth()
+  currYear = new Date().getFullYear()
   displayedColumns: string[] = ['date', 'amount', 'type', 'comments', 'edit'];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -54,6 +59,7 @@ export class ExpenseListComponent implements OnInit, AfterViewInit {
       this.expenseService.getExpenses(this.start, this.end).subscribe((data: Expense[]) => {
         this.expenses = data
         this.dataSource.data = this.expenses
+        this.recalculateMonthlyTotal()
     })
     });
   }
@@ -96,6 +102,9 @@ export class ExpenseListComponent implements OnInit, AfterViewInit {
           next: (expense: Expense) => {
             this.expenses = [...this.expenses, expense];
             this.dataSource.data = this.expenses;
+            if (localDate.getMonth() === this.currMonth && localDate.getFullYear() === this.currYear) {
+              this.recalculateMonthlyTotal()
+            }
           },
           error: (error) => {
             console.error('Error adding expense:', error);
@@ -128,6 +137,9 @@ export class ExpenseListComponent implements OnInit, AfterViewInit {
             if (index !== -1) {
               this.expenses[index] = expense;
               this.dataSource.data = [...this.expenses];
+              if (localDate.getMonth() === this.currMonth && localDate.getFullYear() === this.currYear) {
+                this.recalculateMonthlyTotal()
+              }
             }
           },
           error: (error) => {
@@ -136,5 +148,16 @@ export class ExpenseListComponent implements OnInit, AfterViewInit {
         });
       }
     })
+  }
+
+  recalculateMonthlyTotal() {
+    this.total = 0
+    this.expenses.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      return expenseDate.getMonth() === this.currMonth && expenseDate.getFullYear() === this.currYear;
+    })
+    .forEach(expense => {
+      this.total += expense.amount;
+    });
   }
 }
